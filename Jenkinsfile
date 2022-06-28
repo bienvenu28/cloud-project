@@ -3,6 +3,7 @@ pipeline {
   agent none
 
   stages {
+
     stage('Test') {
              agent {
                label 'build_node'
@@ -46,9 +47,16 @@ pipeline {
             }
         }
     }
+    //This stage will be executed on the app node
     stage('Deployment') {
         agent  {
            label 'app_node'
+        }
+        //The deployment stage will be executed only if the pipeline is triggered from the main branch
+        when {
+            expression {
+                env.BRANCH_NAME == 'main'
+            }
         }
         steps {
             sh 'echo "### Deploy the web app on nginx docker container ###"'
