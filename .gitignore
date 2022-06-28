@@ -1,0 +1,28 @@
+.idea
+
+# IDE
+react-calculator/.idea
+
+# dependencies
+react-calculator/node_modules
+react-calculator/.pnp
+react-calculator/.pnp.js
+
+# testing
+react-calculator/coverage
+
+# production
+react-calculator/build
+
+# misc
+react-calculator/.DS_Store
+react-calculator/.env.local
+react-calculator/.env.development.local
+react-calculator/.env.test.local
+react-calculator/.env.production.local
+
+react-calculator/npm-debug.log*
+react-calculator/yarn-debug.log*
+react-calculator/yarn-error.log*
+
+.vagrant
