@@ -27,9 +27,10 @@ pipeline {
         steps {
             sh 'echo "### Deploy the web app on nginx docker container ###"'
             sh '''
+                 BUILD_PATH="/home/vagrant/workspace/react-calculator-pipeline"
                  # we launch the docker run command only if the react-calculator container is not running
                  if [ ! "$(docker ps | grep -w react-calculator )" ]; then
-                    docker run --name react-calculator --rm -v /home/vagrant/build:/usr/share/nginx/html:ro -p 80:80 -d nginx
+                    docker run --name react-calculator --rm -v $BUILD_PATH/react-calculator/build:/usr/share/nginx/html:ro -p 80:80 -d nginx
                     echo "Web app successfully deployed. You may see it on localhost:8081"
                  else
                     echo "Web app refreshed and already deployed. You may see it on localhost:8081"
