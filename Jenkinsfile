@@ -1,13 +1,11 @@
 pipeline {
 
-  agent none
+  agent {
+       label 'app_node'
+  }
 
   stages {
-
-    stage('Test') {
-             agent {
-               label 'build_node'
-             }
+    stage('Unit Test') {
              steps {
                nodejs('Node-16.15.1') {
                    sh 'echo "### Install packages ####"'
@@ -18,9 +16,6 @@ pipeline {
              }
     }
     stage('Build') {
-         agent {
-            label 'build_node'
-         }
         steps {
             nodejs('Node-16.15.1') {
               sh 'echo "#### Run Build ####"'
@@ -28,36 +23,7 @@ pipeline {
             }
         }
     }
-    stage('Transfer Build to the app node') {
-        agent {
-            label 'build_node'
-        }
-        steps {
-            script {
-                withCredentials([sshUserPrivateKey(credentialsId: 'id_rsa', keyFileVariable: 'PRIVATE_KEY_FILE')]) {
-                    def remote = [:];
-                    remote.name = 'app_node';
-                    remote.host = '172.16.0.3';
-                    remote.allowAnyHosts = true;
-                    remote.user = 'vagrant';
-                    remote.identityFile = PRIVATE_KEY_FILE;
-                    //Transfer the build directory from the build node to the app node
-                    sshPut remote: remote, from: './react-calculator/build', into: '/home/vagrant/'
-                }
-            }
-        }
-    }
-    //This stage will be executed on the app node
-    stage('Deployment') {
-        agent  {
-           label 'app_node'
-        }
-        //The deployment stage will be executed only if the pipeline is triggered from the main branch
-        when {
-            expression {
-                env.BRANCH_NAME == 'main'
-            }
-        }
+    stage('Pre-deployment') {
         steps {
             sh 'echo "### Deploy the web app on nginx docker container ###"'
             sh '''
@@ -72,6 +38,7 @@ pipeline {
         }
     }
   }
+  /*
   post {
     always {
         slackSend channel: "#réalisation-du-projet-devops", message: "Build report - ${env.JOB_NAME} ${env.BUILD_NUMBER} - BUILD STATUS ${currentBuild.currentResult}"
@@ -82,5 +49,5 @@ pipeline {
     failure {
         slackSend color: "danger", channel: "#réalisation-du-projet-devops", message: "Build fails - ${env.JOB_NAME} ${env.BUILD_NUMBER}"
     }
-  }
+  }*/
 }
