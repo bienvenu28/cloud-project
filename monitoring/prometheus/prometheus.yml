@@ -1,8 +1,13 @@
 global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
 
 scrape_configs:
-  -job_name: nginx
-  scrape_interval: 15s
-  metrics_path: '/metrics'
-  static_configs:
-    -targets: ['localhost:9113']
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: [ 'localhost:9090' ]
+  - job_name: 'nginx-exporter-node'
+    scrape_interval: 1s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: [ 'localhost:9113' ]
