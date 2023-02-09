@@ -1,11 +1,10 @@
 pipeline {
 
   agent any
-
+  when {
+    expression { env.BRANC_NAME == 'main'}
+  }
   stages {
-    when {
-      expression { env.BRANC_NAME == 'main'}
-    }
     stage('Unit Test') {
       steps {
           nodejs('Node-16.15.1') {
