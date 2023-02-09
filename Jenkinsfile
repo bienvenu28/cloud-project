@@ -35,7 +35,7 @@ pipeline {
             else
                docker stop react-calculator-pre-prod
                docker run --name react-calculator-pre-prod --rm -p 8081:80 --ip=172.17.0.3 \
-                              -v $PWD/react-calculator/build:/usr/share/nginx/html -d nginx
+               -v $PWD/react-calculator/build:/usr/share/nginx/html -d nginx
                echo "Web app refreshed and already deployed in pre-production. You may see it on localhost:8081"
             fi
           '''
@@ -49,13 +49,13 @@ pipeline {
                  if [ ! "$(docker ps | grep -w react-calculator-prod )" ]; then
 
                     docker run --name react-calculator-prod --rm -p 8082:80 --ip=172.17.0.2 \
-                                        -v $PWD/react-calculator/build:/usr/share/nginx/html -d nginx
+                    -v $PWD/react-calculator/build:/usr/share/nginx/html -d nginx
 
                     echo "Web app successfully deployed in production. You may see it on localhost:8082"
                  else
                     docker stop react-calculator-prod
                     docker run --name react-calculator-prod --rm -p 8082:80 --ip=172.17.0.2 \
-                                        -v $PWD/react-calculator/build:/usr/share/nginx/html -d nginx
+                    -v $PWD/react-calculator/build:/usr/share/nginx/html -d nginx
                     echo "Web app refreshed and already deployed in production. You may see it on localhost:8082"
                  fi
                '''
@@ -71,7 +71,7 @@ pipeline {
           else
             docker stop nginx-exporter
             docker run --rm -p 9113:9113 -d --name nginx-exporter nginx/nginx-prometheus-exporter \
-                        -nginx.scrape-uri http://172.17.0.2:80/metrics
+            -nginx.scrape-uri http://172.17.0.2:80/metrics
             echo "nginx-exporter is already running"
           fi
         '''
