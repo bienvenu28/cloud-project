@@ -29,13 +29,13 @@ pipeline {
             if [ ! "$(docker ps | grep -w react-calculator-pre-prod )" ]; then
 
                docker run --name react-calculator-pre-prod --rm -p 8081:80 \
-               -v $PWD/react-calculator/build:/usr/share/nginx/html:wr -d nginx
+               -v $PWD/react-calculator/build:/usr/share/nginx/html -d nginx
 
                echo "Web app successfully deployed in pre-production. You may see it on localhost:8081"
             else
                docker stop react-calculator-pre-prod
                docker run --name react-calculator-pre-prod --rm -p 8081:80 \
-                              -v $PWD/react-calculator/build:/usr/share/nginx/html:wr -d nginx
+                              -v $PWD/react-calculator/build:/usr/share/nginx/html -d nginx
                echo "Web app refreshed and already deployed in pre-production. You may see it on localhost:8081"
             fi
           '''
