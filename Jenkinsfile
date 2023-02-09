@@ -82,7 +82,9 @@ pipeline {
   }
   options {
       when {
-        branch 'main'
+        expression {
+          env.BRANCH_NAME == 'main'
+        }
       }
    }
   post {
