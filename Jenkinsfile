@@ -3,6 +3,9 @@ pipeline {
   agent any
 
   stages {
+    when {
+      expression { env.BRANC_NAME == 'main'}
+    }
     stage('Unit Test') {
       steps {
           nodejs('Node-16.15.1') {
@@ -80,13 +83,6 @@ pipeline {
     }
    }
   }
-  options {
-      when {
-        expression {
-          env.BRANCH_NAME == 'main'
-        }
-      }
-   }
   post {
     success {
         slackSend  color: "good", channel: "#réalisation-du-projet-devops", message: "Build succeeds - ${env.JOB_NAME} ${env.BUILD_NUMBER}"
