@@ -88,4 +88,9 @@ pipeline {
         slackSend color: "danger", channel: "#réalisation-du-projet-devops", message: "Build fails - ${env.JOB_NAME} ${env.BUILD_NUMBER}"
     }
   }
+  options {
+    when {
+      branch 'main'
+    }
+  }
 }
