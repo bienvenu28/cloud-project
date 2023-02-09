@@ -25,7 +25,7 @@ pipeline {
           steps {
               sh 'docker build -t nginx-react-calculator .'
           }
-        }
+    }
     stage('Pre-production') {
      steps {
         sh 'echo "### Deploying the web app in pre-production###"'
@@ -39,6 +39,7 @@ pipeline {
                echo "Web app refreshed and already deployed in pre-production. You may see it on localhost:8081"
             fi
           '''
+      }
      }
      stage('Production') {
           steps {
@@ -54,7 +55,7 @@ pipeline {
                  fi
                '''
           }
-   }
+     }
    stage('Monitoring') {
     steps {
       sh 'echo "### Launching the nginx-prometheus-exporter container ###" '
