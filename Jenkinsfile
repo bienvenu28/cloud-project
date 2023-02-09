@@ -26,7 +26,6 @@ pipeline {
         sh 'echo "### Deploying the web app in pre-production###"'
         sh '''
             # we launch the docker run command only if the react-calculator-pre-prod container is not running
-            # BUILD_PATH="/home/vagrant/workspace/react-calculator-pipeline"
             if [ ! "$(docker ps | grep -w react-calculator-pre-prod )" ]; then
 
                docker run --name react-calculator-pre-prod --rm -p 8081:80 \
@@ -43,9 +42,7 @@ pipeline {
           steps {
              sh 'echo "### Deploying the web app in production###"'
              sh '''
-                 # we launch the docker run command only if the react-calculator/prod container is not running
-                 # BUILD_PATH="/home/vagrant/workspace/react-calculator-pipeline"
-                 # BUILD_PATH="$(pwd)"
+                 # we launch the docker run command only if the react-calculator-prod container is not running
                  if [ ! "$(docker ps | grep -w react-calculator-prod )" ]; then
 
                     docker run --name react-calculator-prod --rm -p 8082:80 --ip=172.17.0.2:80 \
@@ -60,14 +57,17 @@ pipeline {
      }
    stage('Monitoring') {
     steps {
-      sh 'echo "### Launching the nginx-prometheus-exporter container $(pwd) ###" '
-
+      sh 'echo "### Launching the nginx-prometheus-exporter container###" '
       sh '''
-      [ ! "$(docker ps | grep -w nginx-exporter )" ] && docker run --rm -p 9113:9113 -d \
-      --name nginx-exporter nginx/nginx-prometheus-exporter -nginx.scrape-uri http://172.17.0.2:80/metrics \
-      || echo "nginx-exporter is already running"
-      '''
+      if [ ! "$(docker ps | grep -w nginx-exporter )" ]; then
 
+         docker run --rm -p 9113:9113 -d \--name nginx-exporter nginx/nginx-prometheus-exporter \
+         -nginx.scrape-uri http://172.17.0.2:80/metrics
+
+      else  
+        echo "nginx-exporter is already running"
+      fi
+      '''
       sh 'echo "### Launching prometheus and grafana for monitoring ###" '
       sh 'docker-compose -f ./monitoring/docker-compose.yml up -d'
     }
