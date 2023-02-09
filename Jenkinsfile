@@ -21,19 +21,14 @@ pipeline {
          }
       }
     }
-    stage('Docker image build') {
-          steps {
-              sh 'docker build -t nginx-react-calculator .'
-          }
-    }
     stage('Pre-production') {
      steps {
         sh 'echo "### Deploying the web app in pre-production###"'
         sh '''
             # we launch the docker run command only if the react-calculator-pre-prod container is not running
-            BUILD_PATH="/home/vagrant/workspace/react-calculator-pipeline"
+            # BUILD_PATH="/home/vagrant/workspace/react-calculator-pipeline"
             if [ ! "$(docker ps | grep -w react-calculator-pre-prod )" ]; then
-               docker run --name react-calculator-pre-prod --rm -p 8081:80 -d nginx-react-calculator
+               docker run --name react-calculator-pre-prod --rm -p 8081:80 -v $(pwd)/react-calculator/build:/usr/share/nginx/html:ro -d nginx
                echo "Web app successfully deployed in pre-production. You may see it on localhost:8081"
             else
                echo "Web app refreshed and already deployed in pre-production. You may see it on localhost:8081"
@@ -46,9 +41,10 @@ pipeline {
              sh 'echo "### Deploying the web app in production###"'
              sh '''
                  # we launch the docker run command only if the react-calculator/prod container is not running
-                 BUILD_PATH="/home/vagrant/workspace/react-calculator-pipeline"
+                 # BUILD_PATH="/home/vagrant/workspace/react-calculator-pipeline"
+                 # BUILD_PATH="$(pwd)"
                  if [ ! "$(docker ps | grep -w react-calculator-prod )" ]; then
-                    docker run --name react-calculator-prod --rm -p 8082:80 -d --ip=172.17.0.2:80 nginx-react-calculator
+                    docker run --name react-calculator-prod --rm -p 8082:80 --ip=172.17.0.2:80 -v $(pwd)/react-calculator/build:/usr/share/nginx/html:ro -d nginx
                     echo "Web app successfully deployed in production. You may see it on localhost:8082"
                  else
                     echo "Web app refreshed and already deployed in production. You may see it on localhost:8082"
