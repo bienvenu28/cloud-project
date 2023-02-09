@@ -80,17 +80,17 @@ pipeline {
     }
    }
   }
+  options {
+      when {
+        branch 'main'
+      }
+   }
   post {
     success {
         slackSend  color: "good", channel: "#réalisation-du-projet-devops", message: "Build succeeds - ${env.JOB_NAME} ${env.BUILD_NUMBER}"
     }
     failure {
         slackSend color: "danger", channel: "#réalisation-du-projet-devops", message: "Build fails - ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-    }
-  }
-  options {
-    when {
-      branch 'main'
     }
   }
 }
