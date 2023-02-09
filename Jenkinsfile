@@ -49,13 +49,13 @@ pipeline {
                  if [ ! "$(docker ps | grep -w react-calculator-prod )" ]; then
 
                     docker run --name react-calculator-prod --rm -p 8082:80 --ip=172.17.0.2:80 \
-                                        -v $PWD/react-calculator/build:/usr/share/nginx/html:wr -d nginx
+                                        -v $PWD/react-calculator/build:/usr/share/nginx/html -d nginx
 
                     echo "Web app successfully deployed in production. You may see it on localhost:8082"
                  else
                     docker stop react-calculator-prod
                     docker run --name react-calculator-prod --rm -p 8082:80 --ip=172.17.0.2:80 \
-                                        -v $PWD/react-calculator/build:/usr/share/nginx/html:wr -d nginx
+                                        -v $PWD/react-calculator/build:/usr/share/nginx/html -d nginx
                     echo "Web app refreshed and already deployed in production. You may see it on localhost:8082"
                  fi
                '''
