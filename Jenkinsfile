@@ -22,9 +22,6 @@ pipeline {
       }
     }
     stage('Pre-production') {
-     when {
-        expression {env.BRANCH_NAME == 'main'}
-     }
      steps {
         sh 'echo "### Deploying the web app in pre-production###"'
         sh '''
@@ -45,9 +42,6 @@ pipeline {
       }
      }
      stage('Production') {
-          when {
-            expression {env.BRANCH_NAME == 'main'}
-          }
           steps {
              sh 'echo "### Deploying the web app in production###"'
              sh '''
@@ -68,9 +62,6 @@ pipeline {
           }
      }
    stage('Monitoring') {
-    when {
-      expression {env.BRANCH_NAME == 'main'}
-    }
     steps {
       sh 'echo "### Launching the nginx-prometheus-exporter container###" '
       sh '''
