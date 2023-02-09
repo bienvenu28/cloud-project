@@ -61,10 +61,10 @@ pipeline {
       sh '''
       if [ ! "$(docker ps | grep -w nginx-exporter )" ]; then
 
-         docker run --rm -p 9113:9113 -d \--name nginx-exporter nginx/nginx-prometheus-exporter \
+         docker run --rm -p 9113:9113 -d --name nginx-exporter nginx/nginx-prometheus-exporter \
          -nginx.scrape-uri http://172.17.0.2:80/metrics
 
-      else  
+      else
         echo "nginx-exporter is already running"
       fi
       '''
