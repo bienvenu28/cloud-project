@@ -60,11 +60,13 @@ pipeline {
      }
    stage('Monitoring') {
     steps {
-      sh 'echo "### Launching the nginx-prometheus-exporter container ###" '
+      sh 'echo "### Launching the nginx-prometheus-exporter container $(pwd) ###" '
 
-      sh '[ ! "$(docker ps | grep -w nginx-exporter )" ] && docker run --rm -p 9113:9113 -d \
+      sh '''
+      [ ! "$(docker ps | grep -w nginx-exporter )" ] && docker run --rm -p 9113:9113 -d \
       --name nginx-exporter nginx/nginx-prometheus-exporter -nginx.scrape-uri http://172.17.0.2:80/metrics \
-      || echo "nginx-exporter is already running"'
+      || echo "nginx-exporter is already running"
+      '''
 
       sh 'echo "### Launching prometheus and grafana for monitoring ###" '
       sh 'docker-compose -f ./monitoring/docker-compose.yml up -d'
