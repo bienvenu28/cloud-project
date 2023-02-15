@@ -1,2 +1,2 @@
 # devops-cd
-push
+push 1
