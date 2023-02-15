@@ -42,13 +42,13 @@ pipeline {
             if [ ! "$(docker ps | grep -w react-calculator-pre-prod )" ]; then
 
                docker run --name react-calculator-pre-prod --rm -p 8081:80 --ip=172.17.0.3 \
-               -d "nginx-react-calculator:${env.BUILD_NUMBER}"
+               -d nginx-react-calculator:"${env.BUILD_NUMBER}"
 
                echo "Web app successfully deployed in pre-production. You may see it on localhost:8081"
             else
                docker stop react-calculator-pre-prod
                docker run --name react-calculator-pre-prod --rm -p 8081:80 --ip=172.17.0.3 \
-               -d "nginx-react-calculator:${env.BUILD_NUMBER}"
+               -d nginx-react-calculator:"${env.BUILD_NUMBER}"
                echo "Web app successfully deployed in pre-production. You may see it on localhost:8081"
             fi
           '''
@@ -62,14 +62,14 @@ pipeline {
                  if [ ! "$(docker ps | grep -w react-calculator-prod )" ]; then
 
                     docker run --name react-calculator-prod --rm -p 8082:80 --ip=172.17.0.2 \
-                    -d "nginx-react-calculator:${env.BUILD_NUMBER}"
+                    -d nginx-react-calculator:"${env.BUILD_NUMBER}"
 
                     echo "Web app successfully deployed in production. You may see it on localhost:8082"
                  else
                     docker stop react-calculator-prod
                     docker run --name react-calculator-prod --rm -p 8082:80 --ip=172.17.0.2 \
-                    -d "nginx-react-calculator:${env.BUILD_NUMBER}"
-                    
+                    -d nginx-react-calculator:"${env.BUILD_NUMBER}"
+
                     echo "Web app successfully deployed in production. You may see it on localhost:8082"
                  fi
                '''
