@@ -4,8 +4,8 @@ pipeline {
 
   environment {
      DOCKER_ID = credentials('docker-hub-credentials-id')
-     USERNAME = DOCKER_ID_USR
-     PASSWORD = DOCKER_ID_PSW
+     USERNAME = "${DOCKER_ID_USR}"
+     PASSWORD = "${DOCKER_ID_PSW}"
      BUILD_NUMBER = "${env.BUILD_NUMBER}"
   }
 
