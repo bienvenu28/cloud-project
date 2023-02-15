@@ -25,14 +25,12 @@ pipeline {
     }
    stage('Build and Push Docker image') {
      steps {
-       script {
-          docker.withRegistry([url: "https://registry.hub.docker.com", credentialsId: "docker-registry-credentials-id"]) {
-            print("on")
-            def dockerImage = docker.build("nginx-react-calculator:${env.BUILD_NUMBER}", ".")
-            print("off")
-            dockerImage.push()
-          }
+       environment {
+          DOCKER_ID = credentials('docker-hub-credentials-id')
        }
+       sh 'docker build -t $DOCKER_ID_USR/nginx-react-calculator:${env.BUILD_NUMBER} '
+       sh 'docker login --username=$DOCKER_ID_USR --password=$DOCKER_ID_PSW '
+       sh 'docker push $DOCKER_ID_USR/nginx-react-calculator:${env.BUILD_NUMBER} '
      }
    }
 
