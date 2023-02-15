@@ -44,6 +44,9 @@ pipeline {
       }
      }
      stage('Production') {
+          when {
+            branch 'main'
+          }
           steps {
              sh 'echo "### Deploying the web app in production###"'
              sh '''
@@ -64,6 +67,9 @@ pipeline {
           }
      }
    stage('Monitoring') {
+    when {
+      branch 'main'
+    }
     steps {
       sh 'echo "### Launching the nginx-prometheus-exporter container###" '
       sh '''
