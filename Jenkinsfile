@@ -29,7 +29,7 @@ pipeline {
     }
    stage('Build and Push Docker image') {
      steps {
-       sh 'docker build -t $DOCKER_ID_USR/nginx-react-calculator:${env.BUILD_NUMBER} '
+       sh 'docker build -t "${DOCKER_ID_USR}/nginx-react-calculator:${env.BUILD_NUMBER}" .'
        sh 'docker login -u "${DOCKER_ID_USR}" -p "${DOCKER_ID_PSW}" '
        sh 'docker push $DOCKER_ID_USR/nginx-react-calculator:${env.BUILD_NUMBER} '
      }
