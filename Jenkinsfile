@@ -58,7 +58,7 @@ pipeline {
      stage('Production') {
           steps {
              sh 'echo "### Deploying the web app in production###"'
-             sh """
+             sh '''
                  # we launch the docker run command only if the react-calculator-prod container is not running
                  if [ ! "$(docker ps | grep -w react-calculator-prod )" ]; then
 
@@ -73,7 +73,7 @@ pipeline {
 
                     echo "Web app successfully deployed in production. You may see it on localhost:8082"
                  fi
-               """
+               '''
           }
      }
    stage('Monitoring') {
