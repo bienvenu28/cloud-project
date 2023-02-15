@@ -4,6 +4,8 @@ pipeline {
 
   environment {
      DOCKER_ID = credentials('docker-hub-credentials-id')
+     USERNAME = DOCKER_ID_USR
+     PASSWORD = DOCKER_ID_PSW
      BUILD_NUMBER = "${env.BUILD_NUMBER}"
   }
 
@@ -30,9 +32,9 @@ pipeline {
     }
    stage('Build and Push Docker image') {
      steps {
-       sh "docker build -t ${DOCKER_ID_USR}/nginx-react-calculator:${env.BUILD_NUMBER} ."
-       sh "docker login -u ${DOCKER_ID_USR} -p ${DOCKER_ID_PSW}"
-       sh "docker push ${DOCKER_ID_USR}/nginx-react-calculator:${env.BUILD_NUMBER}"
+       sh 'docker build -t $USERNAME/nginx-react-calculator:$BUILD_NUMBER .'
+       sh 'docker login -u $USERNAME -p $PASSWORD'
+       sh 'docker push $USERNAME/nginx-react-calculator:$BUILD_NUMBER'
      }
    }
     stage('Pre-production') {
@@ -43,13 +45,13 @@ pipeline {
             if [ ! "$(docker ps | grep -w react-calculator-pre-prod )" ]; then
 
                docker run --name react-calculator-pre-prod --rm -p 8081:80 --ip=172.17.0.3 \
-               -d nginx-react-calculator:$BUILD_NUMBER
+               -d $USERNAME/nginx-react-calculator:$BUILD_NUMBER
 
                echo "Web app successfully deployed in pre-production. You may see it on localhost:8081"
             else
                docker stop react-calculator-pre-prod
                docker run --name react-calculator-pre-prod --rm -p 8081:80 --ip=172.17.0.3 \
-               -d nginx-react-calculator:$BUILD_NUMBER
+               -d $USERNAME/nginx-react-calculator:$BUILD_NUMBER
 
                echo "Web app successfully deployed in pre-production. You may see it on localhost:8081"
             fi
@@ -64,13 +66,13 @@ pipeline {
                  if [ ! "$(docker ps | grep -w react-calculator-prod )" ]; then
 
                     docker run --name react-calculator-prod --rm -p 8082:80 --ip=172.17.0.2 \
-                    -d nginx-react-calculator:$BUILD_NUMBER
+                    -d $USERNAME/nginx-react-calculator:$BUILD_NUMBER
 
                     echo "Web app successfully deployed in production. You may see it on localhost:8082"
                  else
                     docker stop react-calculator-prod
                     docker run --name react-calculator-prod --rm -p 8082:80 --ip=172.17.0.2 \
-                    -d nginx-react-calculator:$BUILD_NUMBER
+                    -d $USERNAME/nginx-react-calculator:$BUILD_NUMBER
 
                     echo "Web app successfully deployed in production. You may see it on localhost:8082"
                  fi
