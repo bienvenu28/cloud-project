@@ -99,9 +99,8 @@ pipeline {
       sh 'echo "### Launching prometheus and grafana for monitoring ###" '
       sh 'docker-compose -f ./monitoring/docker-compose.yml up -d'
     }
-   }
+   }*/
   }
-  */
   /*
   post {
     success {
