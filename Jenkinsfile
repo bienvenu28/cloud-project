@@ -28,7 +28,7 @@ pipeline {
        script {
          def dockerImage = docker.build("nginx-react-calculator:${env.BUILD_NUMBER}")
          docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials-id') {
-               def dockerImage = docker.image("nginx-react-calculator:${env.BUILD_NUMBER}")
+               //def dockerImage = docker.image("nginx-react-calculator:${env.BUILD_NUMBER}")
                dockerImage.push()
          }
        }
