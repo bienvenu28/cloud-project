@@ -26,11 +26,10 @@ pipeline {
    stage('Build and Push Docker image') {
      steps {
        script {
-         def dockerImage = docker.build("nginx-react-calculator:${env.BUILD_NUMBER}")
-         docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials-id') {
-               //def dockerImage = docker.image("nginx-react-calculator:${env.BUILD_NUMBER}")
-               dockerImage.push()
-         }
+          docker.withRegistry("https://registry.hub.docker.com", "docker-registry-credentials-id") {
+            def dockerImage = docker.build("nginx-react-calculator:${env.BUILD_NUMBER}", ".")
+            dockerImage.push()
+          }
        }
      }
    }
