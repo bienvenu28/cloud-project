@@ -8,7 +8,7 @@ jobs:
 
   deploy-to-kubernetes:
     name: Deploy to Kubernetes
-    needs: build-and-push-image
+    # needs: build-and-push-image
     runs-on: ubuntu-latest
     steps:
       - name: Authenticate with Google Cloud Platform
@@ -18,7 +18,6 @@ jobs:
           service_account_key: ${{ secrets.GCLOUD_SA_KEY }}
           export_default_credentials: true
       - name: Configure gcloud CLI
-        uses: google-github-actions/setup-gcloud@v1
         run: |
           gcloud container clusters get-credentials react-calculator-cluster --zone europe-west1-b
       - name: Deploy to Kubernetes
@@ -27,6 +26,6 @@ jobs:
           project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
           cluster_name: react-calculator-cluster
           location: europe-west1-b
-          yaml_file: | 
+          yaml_file: |
             - kubernetes/deployment.yaml
             - kubernetes/loadbalancer.yaml
