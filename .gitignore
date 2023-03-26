@@ -24,13 +24,4 @@ react-calculator/npm-debug.log*
 react-calculator/yarn-debug.log*
 react-calculator/yarn-error.log*
 
-.vagrant
-Vagrantfile
-Jenkinsfile
-scripts/
-.gitignore
-k8s/*
-k8s
-scripts/*
-scripts
-
+stable-arch-381116-528c103dd4b2.json

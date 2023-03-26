@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-react-calculator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-react-calculator
+  template:
+    metadata:
+      labels:
+        app: nginx-react-calculator
+    spec:
+      containers:
+        - image: 289802/nginx-react-calculator
+          imagePullPolicy: IfNotPresent
+          name: nginx-react-calculator
+      restartPolicy: Always
