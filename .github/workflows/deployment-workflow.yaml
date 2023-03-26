@@ -8,6 +8,11 @@ jobs:
   build:
     name: app build
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 16.15.1 ]
+
     steps:
       - uses: actions/checkout@v3
       - name: Test and build react app
@@ -15,8 +20,6 @@ jobs:
           yarn --cwd ./react-calculator install
           yarn --cwd ./react-calculator test a --watchAll=false
           yarn --cwd ./react-calculator build
-        env:
-          NODE_VERSION: 16.15.1
 
   build-and-push-image:
     name: Login to Docker Hub
