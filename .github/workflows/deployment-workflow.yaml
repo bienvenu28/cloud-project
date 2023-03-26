@@ -68,7 +68,7 @@ jobs:
         run: |
           gcloud container clusters get-credentials react-calculator-cluster --zone europe-west1-b
       - name: Deploy to Kubernetes
-        uses: google-github-actions/deploy-to-gke@master
+        uses: google-github-actions/deploy-to-gke@main
         with:
           project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
           cluster_name: react-calculator-cluster
