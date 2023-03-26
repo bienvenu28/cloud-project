@@ -2,7 +2,6 @@
 
 # IDE
 react-calculator/.idea
-
 # dependencies
 react-calculator/node_modules
 react-calculator/.pnp
@@ -26,3 +25,8 @@ react-calculator/yarn-debug.log*
 react-calculator/yarn-error.log*
 
 .vagrant
+Vagrantfile
+Jenkinsfile
+scripts/
+.gitignore
+k8s/
