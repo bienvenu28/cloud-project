@@ -55,7 +55,7 @@ jobs:
 
   deploy-to-kubernetes:
     name: Deploy to Kubernetes
-    # needs: build-and-push-image
+    needs: build-and-push-image
     runs-on: ubuntu-latest
     steps:
       - name: Authenticate with Google Cloud Platform
